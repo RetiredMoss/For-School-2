@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradeCalc</title>
+    
+    <!-- Inline CSS to initially hide the result section and style messages -->
+    <style>
+        .result {
+            display: none; /* Keep the result section hidden until needed */
+        }
+        .message-error {
+            color: red; /* Style for error messages */
+        }
+        .message-success {
+            color: cyan; /* Style for success messages */
+        }
+    </style>
+</head>
+<body>
+    <!-- Main heading describing the page's purpose -->
+    <h1>College Grade Calculator</h1>
+    
+    <!-- Form where users input their preliminary grade -->
+    <form method="POST" id="gradeForm">
+        <!-- Label and input field for preliminary grade entry -->
+        <label for="prelim_grade">Enter Preliminary Grade:</label>
+        <input type="number" id="prelim_grade" name="prelim_grade" step="0.01" min="0" max="100" required>
+        
+        <!-- Button to submit the form and calculate the grade -->
+        <button type="submit">Calculate</button>
+        
+        <!-- Section to display the calculation result, initially hidden -->
+        <div id="resultSection" class="result" style="display: {% if result %}block{% else %}none{% endif %};">
+            {% if result %}
+            <h2>Result:</h2>
+            <p class="{% if 'Error' in result or 'not possible' in result %}message-error{% elif prelim_grade is not none and prelim_grade < 75 %}message-error{% else %}message-success{% endif %}">{{ result }}</p>
+            {% endif %}
+        </div>
+        
+        
+    </form>
+</body>
+</html>
+
