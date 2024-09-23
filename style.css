@@ -1,0 +1,63 @@
+/* General body styling */
+body {
+    background-color: #001f3f; /* Navy blue background */
+    color: #ffffff; /* White text */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Main heading styling */
+h1 {
+    color: #ff6f61; /* Light salmon color */
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+/* Form label and input field styling */
+label {
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="number"] {
+    padding: 10px;
+    font-size: 1em;
+    border: 2px solid #ff6f61; /* Salmon border */
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 50%;
+}
+
+/* Button styling */
+button {
+    background-color: #ff6f61; /* Salmon button */
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ff4c3b; /* Darker salmon on hover */
+}
+
+/* Result section styling */
+.result {
+    margin-top: 20px;
+    font-size: 1.3em;
+}
+
+/* Success and error message styling */
+.message-success {
+    color: #2ecc71; /* Green for success */
+}
+
+.message-error {
+    color: #e74c3c; /* Red for error */
+}
