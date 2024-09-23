@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradeCalc</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+    <style>
+        .message-error {
+            color: red; /* Style for error messages */
+        }
+        .message-success {
+            color: cyan; /* Style for success messages */
+        }
+    </style>
+</head>
+<body>
+    <h1>College Grade Calculator</h1>
+    
+    <label for="prelim_grade">Enter Preliminary Grade:</label>
+    <input type="number" id="prelim_grade" name="prelim_grade" step="0.01" min="0" max="100" required>
+    
+    <button id="calculateButton">Calculate</button>
+    
+    <div id="resultSection" style="display: none;">
+        <h2>Result:</h2>
+        <p id="resultText"></p>
+    </div>
+    
+    <py-script>
+        from pyscript import Element
+
+        def calculate_required_grades(prelim_grade):
+            passing_grade = 75
+            prelim_weight = 0.20
+            midterm_weight = 0.30
+            final_weight = 0.50
+            grade_range = (0, 100)
+            deanslist_grade = 90
+
+            if not (grade_range[0] <= prelim_grade <= grade_range[1]):
+                return "Error: Preliminary grade must be between 0 and 100."
+
+            current_total = prelim_grade * prelim_weight
+            required_total = passing_grade - current_total
+            min_required_average = required_total / (midterm_weight + final_weight)
+
+            if prelim_grade >= passing_grade:
+                message = f"You need a {min_required_average:.2f}% average on the Midterms and Finals to pass."
+                if prelim_grade >= deanslist_grade:
+                    message += " You already qualify for Dean's Lister! Keep up the great work!"
+                else:
+                    deanslist_total = deanslist_grade - current_total
+                    min_deanslist_average = deanslist_total / (midterm_weight + final_weight)
+                    message += (
+                        f" To qualify for Dean's Lister, you need a Midterm grade of {min_deanslist_average:.2f}% "
+                        f"and a Final grade of {min_deanslist_average:.2f}%."
+                    )
+                return message
+
+            if min_required_average > 100:
+                return "Error: Achieving the passing grade is not possible with this preliminary score."
+
+            if min_required_average < grade_range[0]:
+                min_required_average = grade_range[0]
+
+            deanslist_total = deanslist_grade - current_total
+            min_deanslist_average = deanslist_total / (midterm_weight + final_weight)
+
+            return (
+                f"You need a {min_required_average:.2f}% average on the Midterms and Finals to pass. "
+                f"You need a Midterm grade of {min_deanslist_average:.2f}% and a Final grade of {min_deanslist_average:.2f}% to qualify for Dean's Lister."
+            )
+
+        def calculate():
+            prelim_grade = float(Element("prelim_grade").value)
+            result = calculate_required_grades(prelim_grade)
+            result_text = Element("resultText")
+            result_section = Element("resultSection")
+            
+            result_text.element.innerText = result
+            result_section.element.style.display = "block"
+
+            if "Error" in result or "not possible" in result:
+                result_text.element.className = "message-error"
+            else:
+                result_text.element.className = "message-success"
+
+        Element("calculateButton").element.onclick = calculate
+    </py-script>
+</body>
+</html>
